@@ -1,4 +1,67 @@
 ---
-title: "Update Bill Order"
-hidden: true
+title: "Update Billpay Order"
+description: "Update the amount of a generated billpay reference. The order must be pending and must not have received any payments for flexible orders."
+api: "POST /v1/billpay/{transaction_id}/update"
 ---
+
+## Path Parameters
+
+<ParamField path="transaction_id" type="string" required>
+  The unique UUID of the bill transaction to update (e.g. `5f8b789f-e6e6-4506-91be-cb344009c680`).
+</ParamField>
+
+## Body Parameters
+
+<ParamField body="amount" type="number" required>
+  The new amount to set for the bill order.
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean" required>
+  Indicates whether the update was successful.
+</ResponseField>
+
+<ResponseField name="message" type="string" required>
+  A human-readable status message.
+</ResponseField>
+
+<ResponseField name="bill" type="object">
+  The updated bill details. Present on success.
+
+  <Expandable title="bill properties">
+    <ResponseField name="amount" type="string">
+      The updated formatted bill amount (e.g. `1,500.00`).
+    </ResponseField>
+
+    <ResponseField name="reference" type="string">
+      The unique bill reference number.
+    </ResponseField>
+
+    <ResponseField name="mode" type="string">
+      The payment mode (`exact` or `flexible`).
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="transaction_id" type="string">
+  The UUID of the updated transaction. Present on success.
+</ResponseField>
+
+## Error Response
+
+<Warning>
+  The update will fail if:
+
+  - The order is not in `pending` status.
+  - The `flexible` order has already received partial payments.
+  - Network failure caused by third party aggregator
+</Warning>
+
+<ResponseField name="success" type="boolean">
+  Returns `false` on failure.
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  A description of why the update failed.
+</ResponseField>

@@ -16,7 +16,7 @@ This feature enables you to receive instant payments via unique control numbers 
   A unique reference number for the bill (e.g. `FCLORDER12345`).
 </ParamField>
 
-<ParamField body="payment_mode" type="enum<string>" required>
+<ParamField body="payment_mode" default="exact" type="enum<string>" required>
   The payment mode for the bill.
 
   - `exact` : Locks the bill to the exact amount, user can't pay below or over the registered amount
