@@ -1,3 +1,86 @@
 ---
 title: "Get Bill Status"
+description: "Retrieve the Bills current status"
+api: "GET /v1/billpay/{transaction_id}"
 ---
+
+## Path Parameters
+
+<ParamField path="transaction_id" type="string" required>
+  The unique UUID of the bill transaction (e.g. `5f8b789f-e6e6-4506-91be-cb344009c680`).
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean">
+  Indicates whether the request was successful.
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  A human-readable status message.
+</ResponseField>
+
+<ResponseField name="transaction_id" type="string">
+  The unique UUID of the transaction.
+</ResponseField>
+
+<ResponseField name="transaction_status" type="string">
+  Current status of the bill. Possible values: `pending`,`partial`,`settled`,`cancelled`
+
+  - `pending` : no records of any payment activity
+  - `partial` : the bill has started receiving payments (only applicable to flexible bills)
+  - `settled` : the bill has received the full amount
+  - `cancelled` : the bill has been cancelled (only bills with no payment activity can be cancelled)
+</ResponseField>
+
+<ResponseField name="bill" type="object">
+  The original bill information.
+
+  <Expandable title="bill properties">
+    <ResponseField name="amount" type="string">
+      The formatted bill amount (e.g. `1,000.00`).
+    </ResponseField>
+
+    <ResponseField name="reference" type="string">
+      The unique bill reference number.
+    </ResponseField>
+
+    <ResponseField name="mode" type="string | null">
+      The payment mode (`exact` or `flexible`). `null` if not set.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="amount" type="object">
+  Breakdown of the transaction amounts.
+
+  <Expandable title="amount properties">
+    <ResponseField name="value" type="string">
+      The total billed amount.
+    </ResponseField>
+
+    <ResponseField name="settled" type="string">
+      The amount that has been settled so far.
+    </ResponseField>
+
+    <ResponseField name="fee" type="string">
+      Any fees applied to the transaction.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="metadata" type="object">
+  Additional key-value pairs associated with the bill.
+</ResponseField>
+
+<ResponseField name="settled_at" type="string | null">
+  ISO 8601 timestamp of when the bill was settled. `null` if not yet settled.
+</ResponseField>
+
+<ResponseField name="created_at" type="string">
+  ISO 8601 timestamp of when the bill was created.
+</ResponseField>
+
+<ResponseField name="timestamp" type="string">
+  ISO 8601 timestamp of when this response was generated.
+</ResponseField>

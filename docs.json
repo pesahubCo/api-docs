@@ -50,9 +50,9 @@
             "group": "Bill Payment",
             "hidden": true,
             "pages": [
+              "api-reference/collection/get-bill-status",
               "api-reference/collection/create-a-bill",
               "api-reference/collection/update-bill-order",
-              "api-reference/collection/get-bill-status",
               "api-reference/collection/change-bill-status"
             ]
           },
