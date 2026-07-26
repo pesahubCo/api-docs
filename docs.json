@@ -116,11 +116,6 @@
      "vscode"
    ]
   },
-  "footer": {
-    "socials": {
-      "linkedin": "https://linkedin.com/company/mintlify"
-    }
-  },
   "api": {
     "mdx": {
       "auth": {
