@@ -48,7 +48,6 @@
           },
           {
             "group": "Bill Payment",
-            "hidden": true,
             "pages": [
               "api-reference/collection/get-bill-status",
               "api-reference/collection/create-a-bill",
