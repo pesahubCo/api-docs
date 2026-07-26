@@ -87,7 +87,7 @@
     }
   },
   "logo": {
-    "light": "https://raw.githubusercontent.com/pesahubCo/docs/refs/heads/main/brand/logo-dark.svg",
+    "light": "https://raw.githubusercontent.com/pesahubCo/api-docs/1be52447686466d943f482904f13b4c0f5cb6372/logo/light.svg",
     "dark": "https://raw.githubusercontent.com/pesahubCo/docs/refs/heads/main/brand/logo-white.svg",
     "href": "https://pesahub.co"
   },
