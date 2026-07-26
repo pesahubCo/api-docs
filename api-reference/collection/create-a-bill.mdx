@@ -1,3 +1,74 @@
 ---
-title: "Create Bill Order"
+title: "Create a Bill Order"
+description: "Create a unique control number that can be paid manually via mobile money or SIM banking."
+api: "POST /api/v1/payments/bill"
 ---
+
+This feature enables you to receive instant payments via unique control numbers using mobile money or SIM banking (e.g. CRDB).
+
+## Request
+
+<ParamField body="amount" type="number" required>
+  The payment amount to be billed.
+</ParamField>
+
+<ParamField body="payment_number" type="string" required>
+  A unique reference number for the bill (e.g. `FCO002`).
+</ParamField>
+
+<ParamField body="payment_mode" type="enum<string>" required>
+  The payment mode for the bill.
+
+  - `exact` : Locks the bill to the exact amount, user can't pay below or over the registered amount
+  - `flexible` : Allows partial and over payments. Ideal for installments.
+</ParamField>
+
+<ParamField body="description" type="string" required>
+  A short description of what the payment is for (e.g. `Solar Installment`).
+</ParamField>
+
+<ParamField body="metadata" type="object">
+  Optional key-value pairs for additional context.
+
+  <Expandable title="metadata properties">
+    <ParamField body="order_id" type="string">
+      Your internal order identifier.
+    </ParamField>
+
+    <ParamField body="customer_note" type="string">
+      A note associated with the customer or transaction.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean">
+  Indicates whether the bill was registered successfully.
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  A human-readable status message.
+</ResponseField>
+
+<ResponseField name="transaction_reference" type="string">
+  A unique UUID reference for the transaction.
+</ResponseField>
+
+<ResponseField name="bill" type="object">
+  Details of the registered bill.
+
+  <Expandable title="bill properties">
+    <ResponseField name="amount" type="string">
+      The formatted bill amount (e.g. `1,000.00`).
+    </ResponseField>
+
+    <ResponseField name="reference" type="string">
+      The payment number/reference used.
+    </ResponseField>
+
+    <ResponseField name="mode" type="string">
+      The payment mode applied to the bill.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
