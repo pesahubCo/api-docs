@@ -10,6 +10,24 @@ The Bank Payout API allows you to transfer funds directly to a recipient's bank 
 
 ---
 
+## Request Headers
+
+<ParamField header="Authorization" type="string" required>
+  Bearer token for authentication. Format: `Bearer <token>`
+</ParamField>
+
+<ParamField header="Accept" default="application/json" type="string">
+  Expected response format. Use `application/json`.
+</ParamField>
+
+<ParamField header="Content-Type" default="application/json" type="string">
+  Format of the request body. Use `application/json`.
+</ParamField>
+
+<ParamField header="Idempotency-Key" type="string" required>
+  A unique key to ensure idempotent requests.
+</ParamField>
+
 ## Preview Bank Payout
 
 Calculate fees and validate recipient details before committing.
@@ -17,13 +35,6 @@ Calculate fees and validate recipient details before committing.
 ```http
 POST /api/v1/payouts/bank/preview
 ```
-
-### Request Headers
-
-| Header | Value |
-| --- | --- |
-| `Accept` | `application/json` |
-| `Content-Type` | `application/json` |
 
 ### Request Body
 
@@ -94,81 +105,87 @@ curl -X POST https://pesahub.co/api/v1/payouts/bank/preview \
 
 Execute the bank transfer.
 
-```http
-POST /v1/payouts/bank
-```
-
 ### Request Body
 
 Same fields as the preview endpoint.
 
-### Example Request
+### Response
 
-<CodeGroup>
+<ResponseField name="success" type="boolean">
+  Indicates whether the bank payout was successful.
+</ResponseField>
 
-```bash cURL
-curl -X POST https://pesahub.co/api/v1/payouts/bank \
-  -H "Authorization: Bearer {{api_key}}" \
-  -H "Accept: application/json" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "amount": 5000,
-    "currency": "TZS",
-    "beneficiary": {
-      "phone_number": "07XXXXXXXX",
-      "full_name": "DEMO RECIPIENT"
-    },
-    "account_number": "XXXXXXXXXXXX",
-    "bic": "NLCBTZTX",
-    "metadata": {
-      "order_id": "order_001",
-      "notes": "Payment for services"
-    }
-  }'
-```
+<ResponseField name="message" type="string">
+  Human-readable status message.
+</ResponseField>
 
-</CodeGroup>
+<ResponseField name="balance" type="object">
+  Updated account balance after the payout.
 
----
+  <Expandable title="balance">
+    <ResponseField name="current" type="number">
+      Current available balance.
+    </ResponseField>
 
-## List Banks
+    <ResponseField name="reserved" type="number">
+      Reserved (held) balance.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
 
-Retrieve a list of all bank payouts.
+<ResponseField name="transaction_id" type="string">
+  Unique identifier for the transaction.
+</ResponseField>
 
-```http
-GET /v1/payouts/bank/list
-```
+<ResponseField name="status" type="string">
+  Current status of the payout. Example: `initiated`.
+</ResponseField>
 
-### Example Request
+<ResponseField name="amount" type="object">
+  Details about the payout amount.
 
-```bash cURL
-curl -X GET https://pesahub.co/api/v1/payouts/bank/list \
-  -H "Authorization: Bearer {{api_key}}" \
-  -H "Accept: application/json"
-```
+  <Expandable title="amount">
+    <ResponseField name="value" type="number">
+      The payout amount.
+    </ResponseField>
 
-<CodeGroup>
+    <ResponseField name="currency" type="string">
+      Currency code. Example: `TZS`.
+    </ResponseField>
 
-```bash Curl
-{
-    "success": true,
-    "message": "Bank list retrieved successfully",
-    "banks": [
-        {
-            "name": "ABSA BANK TANZANIA LIMITED",
-            "value": "absa_bank_tanzania_limited",
-            "bic": "BARCTZTZ"
-        },
-        {
-            "name": "AKIBA COMMERCIAL BANK PLC",
-            "value": "akiba_commercial_bank_plc",
-            "bic": "AKCOTZTZ"
-        }
-    ]
-}
-```
+    <ResponseField name="fee" type="number">
+      Transaction fee applied.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
 
-</CodeGroup>
+<ResponseField name="bank" type="object">
+  Bank account details used for the payout.
+
+  <Expandable title="bank">
+    <ResponseField name="account_number" type="string">
+      The recipient's bank account number.
+    </ResponseField>
+
+    <ResponseField name="bic" type="string">
+      Bank Identifier Code (BIC/SWIFT) of the recipient's bank.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="metadata" type="object">
+  Additional metadata attached to the payout.
+
+  <Expandable title="metadata">
+    <ResponseField name="order_id" type="number">
+      Associated order identifier.
+    </ResponseField>
+
+    <ResponseField name="notes" type="string">
+      Optional notes for the payout.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
 
 <Tip>
   Always run a **preview** before initiating a bank payout to validate the BIC and account number are correct.

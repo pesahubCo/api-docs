@@ -4,20 +4,15 @@ description: "Retrieves the current status and details of a payment using its tr
 api: "GET /api/v1/payments/{transaction_id}"
 ---
 
-## Authentication
-
-Requires a Bearer token in the `Authorization` header.
-
-```http
-Authorization: Bearer {{api_key}}
-```
-
 ## Request Headers
 
-| Header | Value |
-| --- | --- |
-| `Accept` | `application/json` |
-| `Content-Type` | `application/json` |
+<ParamField header="Authorization" type="string" required>
+  Bearer token for authentication. Format: `Bearer <token>`
+</ParamField>
+
+<ParamField header="Accept" default="application/json" type="string">
+  Expected response format. Use `application/json`.
+</ParamField>
 
 ## Path Parameters
 

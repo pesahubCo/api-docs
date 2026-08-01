@@ -31,6 +31,7 @@
       {
         "tab": "API reference",
         "pages": [
+          "api-reference/status",
           {
             "group": "Account",
             "pages": [
@@ -63,7 +64,12 @@
               "api-reference/payout/bank-payout"
             ]
           },
-          "api-reference/status"
+          {
+            "group": "Extra",
+            "pages": [
+              "untitled-page"
+            ]
+          }
         ]
       }
     ],

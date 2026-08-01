@@ -1,12 +1,30 @@
 ---
 title: "Mobile Payout"
 description: "Send money directly to a mobile money wallet"
-api: "POST https://pesahub.co/api/v1/payouts/mobile"
+api: "POST /api/v1/payouts/mobile"
 ---
 
 ## Overview
 
 The Mobile Payout API lets you send funds directly to a recipient's mobile money wallet. Use the **preview** endpoint first to see fee breakdowns, then call **initiate** to execute the transfer.
+
+## Request Headers
+
+<ParamField header="Authorization" type="string" required>
+  Bearer token for authentication. Format: `Bearer <token>`
+</ParamField>
+
+<ParamField header="Accept" default="application/json" type="string">
+  Expected response format. Use `application/json`.
+</ParamField>
+
+<ParamField header="Content-Type" default="application/json" type="string">
+  Format of the request body. Use `application/json`.
+</ParamField>
+
+<ParamField header="Idempotency-Key" type="string" required>
+  A unique key to ensure idempotent requests.
+</ParamField>
 
 ---
 
@@ -17,13 +35,6 @@ Calculate fees and preview the payout before committing.
 ```http
 POST /api/v1/payouts/mobile/preview
 ```
-
-### Request Headers
-
-| Header | Value |
-| --- | --- |
-| `Accept` | `application/json` |
-| `Content-Type` | `application/json` |
 
 ### Request Body
 
@@ -95,27 +106,69 @@ Same fields as the preview endpoint.
   Arbitrary key-value pairs for your reference. Maximum of 3 items, each less than 100 characters.
 </ParamField>
 
-### Example Request
+### Response
 
-<CodeGroup>
+<ResponseField name="success" type="boolean">
+  Indicates whether the payout was successful.
+</ResponseField>
 
-```bash cURL
-curl -X POST https://pesahub.co/api/v1/payouts/mobile \
-  -H "Authorization: Bearer {{api_key}}" \
-  -H "Accept: application/json" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "amount": 1000,
-    "currency": "TZS",
-    "phone_number": "07XXXXXXXX",
-    "metadata": {
-      "order_id": "order_001",
-      "note": "Payment for services"
-    }
-  }'
-```
+<ResponseField name="message" type="string">
+  Human-readable status message.
+</ResponseField>
 
-</CodeGroup>
+<ResponseField name="balance" type="object">
+  Updated account balance after the payout.
+
+  <Expandable title="balance">
+    <ResponseField name="current" type="number">
+      Current available balance.
+    </ResponseField>
+
+    <ResponseField name="reserved" type="number">
+      Reserved (held) balance.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="transaction_id" type="string">
+  Unique identifier for the transaction.
+</ResponseField>
+
+<ResponseField name="status" type="string">
+  Current status of the payout. Example: `initiated`.
+</ResponseField>
+
+<ResponseField name="amount" type="object">
+  Details about the payout amount.
+
+  <Expandable title="amount">
+    <ResponseField name="value" type="number">
+      The payout amount.
+    </ResponseField>
+
+    <ResponseField name="currency" type="string">
+      Currency code. Example: `TZS`.
+    </ResponseField>
+
+    <ResponseField name="fee" type="number">
+      Transaction fee applied.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="metadata" type="object">
+  Additional metadata attached to the payout.
+
+  <Expandable title="metadata">
+    <ResponseField name="order_id" type="string">
+      Associated order identifier.
+    </ResponseField>
+
+    <ResponseField name="note" type="string">
+      Optional note for the payout.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
 
 <Tip>
   Always run a **preview** before initiating a payout to confirm fees and ensure the recipient details are correct.

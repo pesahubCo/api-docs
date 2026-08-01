@@ -6,14 +6,25 @@ api: "POST /api/v1/payments/ussd"
 
 ## Overview
 
-Sends a USSD push prompt to the customer's phone, asking them to authorize a payment from their mobile money wallet. Supports M-Pesa, Airtel Money, Halopesa, Mixx by Yas, and TIPS Dynamic QR.
+Sends a USSD push prompt to the customer's phone, asking them to authorize a payment from their mobile money wallet. Supports M-Pesa, Airtel Money, Halopesa, Mixx by Yas.
 
 ## Request Headers
 
-| Header | Value |
-| --- | --- |
-| `Accept` | `application/json` |
-| `Content-Type` | `application/json` |
+<ParamField header="Authorization" type="string" required>
+  Bearer token for authentication. Format: `Bearer <token>`
+</ParamField>
+
+<ParamField header="Accept" default="application/json" type="string">
+  Expected response format. Use `application/json`.
+</ParamField>
+
+<ParamField header="Content-Type" default="application/json" type="string">
+  Format of the request body. Use `application/json`.
+</ParamField>
+
+<ParamField header="Idempotency-Key" type="string" required>
+  A unique key to ensure idempotent requests.
+</ParamField>
 
 ## Request Body
 

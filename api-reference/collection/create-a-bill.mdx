@@ -6,6 +6,20 @@ api: "POST /api/v1/payments/billpay"
 
 This feature enables you to receive instant payments via unique control numbers using mobile money or SIM banking (e.g. CRDB).
 
+## Request Headers
+
+<ParamField header="Authorization" type="string" required>
+  Bearer token for authentication. Format: `Bearer <token>`
+</ParamField>
+
+<ParamField header="Accept" default="application/json" type="string">
+  Expected response format. Use `application/json`.
+</ParamField>
+
+<ParamField header="Content-Type" default="application/json" type="string">
+  Format of the request body. Use `application/json`.
+</ParamField>
+
 ## Request
 
 <ParamField body="amount" type="number" required>

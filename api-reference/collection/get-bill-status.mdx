@@ -4,6 +4,16 @@ description: "Retrieve the Bills current status"
 api: "GET /v1/billpay/{transaction_id}"
 ---
 
+## Request Headers
+
+<ParamField header="Authorization" type="string" required>
+  Bearer token for authentication. Format: `Bearer <token>`
+</ParamField>
+
+<ParamField header="Accept" default="application/json" type="string">
+  Expected response format. Use `application/json`.
+</ParamField>
+
 ## Path Parameters
 
 <ParamField path="transaction_id" type="string" required>

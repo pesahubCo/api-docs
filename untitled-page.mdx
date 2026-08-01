@@ -1,0 +1,68 @@
+---
+title: "List Banks"
+description: "Retrieve a list of supported banks available for payouts."
+api: "GET /v1/payouts/bank/list"
+---
+
+## List Banks
+
+Get a list of banks supported
+
+### Headers
+
+<ParamField header="Authorization" type="string" required>
+  Bearer token for authentication. Format: `Bearer <token>`
+</ParamField>
+
+<ParamField header="Accept" default="application/json" type="string">
+  Expected response format. Use `application/json`.
+</ParamField>
+
+### Response
+
+<ResponseField name="success" type="boolean">
+  Indicates whether the request was successful.
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  Human-readable status message.
+</ResponseField>
+
+<ResponseField name="banks" type="array">
+  List of supported banks.
+
+  <Expandable title="banks[]">
+    <ResponseField name="name" type="string">
+      Full official name of the bank.
+    </ResponseField>
+
+    <ResponseField name="value" type="string">
+      Slug identifier used when initiating a bank payout.
+    </ResponseField>
+
+    <ResponseField name="bic" type="string">
+      Bank Identifier Code (BIC/SWIFT) for the bank.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example Response
+
+```json
+{
+  "success": true,
+  "message": "Bank list retrieved successfully",
+  "banks": [
+    {
+      "name": "ABSA BANK TANZANIA LIMITED",
+      "value": "absa_bank_tanzania_limited",
+      "bic": "BARCTZTZ"
+    },
+    {
+      "name": "AKIBA COMMERCIAL BANK PLC",
+      "value": "akiba_commercial_bank_plc",
+      "bic": "AKCOTZTZ"
+    }
+  ]
+}
+```
