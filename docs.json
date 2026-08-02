@@ -23,6 +23,7 @@
           {
             "group": "Webhooks",
             "pages": [
+              "untitled-page-2",
               "payment"
             ]
           }
