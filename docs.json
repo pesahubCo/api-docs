@@ -12,7 +12,7 @@
     "tabs": [
       {
         "tab": "Guides",
-        "groups": [
+        "pages": [
           {
             "group": "Getting started",
             "pages": [
@@ -26,7 +26,8 @@
               "untitled-page-2",
               "payment"
             ]
-          }
+          },
+          "untitled-page-3"
         ]
       },
       {
