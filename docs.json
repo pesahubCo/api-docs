@@ -23,11 +23,11 @@
           {
             "group": "Webhooks",
             "pages": [
-              "untitled-page-2",
+              "webhooks-and-checksum",
               "payment"
             ]
           },
-          "untitled-page-3"
+          "billpay-payments"
         ]
       },
       {
