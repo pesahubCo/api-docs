@@ -53,6 +53,7 @@ curl -X POST https://pesahub.co/api/v1/payments/ussd \
   -H "Authorization: Bearer {{api_key}}" \
   -H "Accept: application/json" \
   -H "Content-Type: application/json" \
+  -H 'Idempotency-Key: <idempotency-key>'
   -d '{
     "amount": 1000,
     "currency": "TZS",
@@ -65,20 +66,6 @@ curl -X POST https://pesahub.co/api/v1/payments/ussd \
 ```
 
 </CodeGroup>
-
-## Request Body Example
-
-```json
-{
-  "amount": 1000,
-  "currency": "TZS",
-  "phone_number": "07XXXXXXXX",
-  "metadata": {
-    "order_id": "order_001",
-    "customer_note": "Payment for services"
-  }
-}
-```
 
 ## Response
 
