@@ -24,8 +24,8 @@
             "group": "Webhooks",
             "pages": [
               "webhooks-and-checksum",
-              "payment",
-              "untitled-page-2"
+              "payment-webhook-handling",
+              "payout-webhook-handling"
             ]
           },
           "billpay-payments"
