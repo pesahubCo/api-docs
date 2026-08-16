@@ -8,6 +8,10 @@ api: "POST /api/v1/payouts/mobile"
 
 The Mobile Payout API lets you send funds directly to a recipient's mobile money wallet. Use the **preview** endpoint first to see fee breakdowns, then call **initiate** to execute the transfer.
 
+<Note>
+  Mobile payout is currently restricted to 300,000 TZS in a single transaction
+</Note>
+
 ## Request Headers
 
 <ParamField header="Authorization" type="string" required>

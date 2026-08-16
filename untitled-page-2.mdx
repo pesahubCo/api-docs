@@ -1,0 +1,170 @@
+---
+title: "Payout"
+---
+
+When a payout succeeds or fails, the platform sends an HTTP `POST` request to your configured callback URL. Each request contains an `event` field identifying the notification type.
+
+<Note>
+  If your API token has a passphrase configured, every request includes a `Pesahub-Signature` header — an HMAC over the raw payload. See [Verify a Checksum](https://docs.pesahub.co/webhooks-and-checksum) for validation steps.
+</Note>
+
+## Events
+
+| Event | Description |
+| --- | --- |
+| `payout.completed` | Payment has been settled to the beneficiary. |
+| `payout.failed` | Payout could not be processed. |
+
+## Payload Fields
+
+<ResponseField name="event" type="string" required>
+  The event type. One of `payout.completed` or `payout.failed`.
+</ResponseField>
+
+<ResponseField name="transaction_id" type="string" required>
+  Unique identifier for the transaction.
+</ResponseField>
+
+<ResponseField name="transaction_mode" type="string" required>
+  The payout channel type, e.g. `mobile` or `bank`.
+</ResponseField>
+
+<ResponseField name="transaction_currency" type="string" required>
+  ISO currency code, e.g. `TZS`.
+</ResponseField>
+
+<ResponseField name="channel" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="name" type="string">
+      Channel name, e.g. `airtel`, `mpesa`, or a bank identifier.
+    </ResponseField>
+
+    <ResponseField name="reference" type="string">
+      Channel-level transaction reference.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="amount" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="value" type="string">
+      Formatted payout amount, e.g. `1,000.00`.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="payout_reference" type="string" required>
+  Your platform's payout reference.
+</ResponseField>
+
+<ResponseField name="beneficiary" type="object" required>
+  <Expandable title="properties" defaultOpen>
+    **Mobile payout**
+
+    <ResponseField name="phone_number" type="string">
+      Beneficiary's phone number.
+    </ResponseField>
+
+    <ResponseField name="phone_network" type="string">
+      Mobile network, e.g. `airtel`, `mpesa`.
+    </ResponseField>
+
+    <ResponseField name="full_name" type="string">
+      Beneficiary's full name.
+    </ResponseField>
+
+    **Bank payout**
+
+    <ResponseField name="bank_account" type="string">
+      Beneficiary's bank account number.
+    </ResponseField>
+
+    <ResponseField name="bank_name" type="string">
+      Name of the beneficiary's bank.
+    </ResponseField>
+
+    <ResponseField name="bank_bic" type="string">
+      BIC/SWIFT code of the beneficiary's bank.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="metadata" type="object">
+  Arbitrary key-value pairs you attached to the payout request.
+</ResponseField>
+
+<ResponseField name="paid_at" type="string | null">
+  ISO 8601 timestamp of when the payout was settled. `null` for failed payouts.
+</ResponseField>
+
+<ResponseField name="created_at" type="string" required>
+  ISO 8601 timestamp of when the payout was created.
+</ResponseField>
+
+<ResponseField name="timestamp" type="string" required>
+  ISO 8601 timestamp of when this webhook was dispatched.
+</ResponseField>
+
+## Example Payloads
+
+<Tabs>
+  <Tab title="payout.completed">
+    ```json
+    {
+      "event": "payout.completed",
+      "transaction_id": "a04a0d76-bbbf-4838-b626-6f15555b08ff",
+      "transaction_mode": "mobile",
+      "transaction_currency": "TZS",
+      "channel": {
+        "name": "airtel",
+        "reference": "PAY7C550724L"
+      },
+      "amount": {
+        "value": "1,000.00"
+      },
+      "payout_reference": "TJVLCKHK3LEO",
+      "beneficiary": {
+        "phone_number": "255682908805",
+        "phone_network": "airtel",
+        "full_name": "ABDULBASIT RUBEIYYA"
+      },
+      "metadata": {
+        "order_id": "order12345",
+        "note": "someone wants money"
+      },
+      "paid_at": "2026-08-16T18:44:28.000000Z",
+      "created_at": "2026-08-16T18:43:32.000000Z",
+      "timestamp": "2026-08-16T18:44:29.625184Z"
+    }
+    ```
+  </Tab>
+  <Tab title="payout.failed">
+    ```json
+    {
+      "event": "payout.failed",
+      "transaction_id": "8f3a1c2e9-4838-b626-6f15555b08ff",
+      "transaction_mode": "mobile",
+      "transaction_currency": "TZS",
+      "channel": {
+        "name": "mpesa",
+        "reference": "CPTXN987654"
+      },
+      "amount": {
+        "value": "1,000.00"
+      },
+      "payout_reference": "PYT0260810001",
+      "beneficiary": {
+        "phone_number": "255712345678",
+        "phone_network": "mpesa",
+        "full_name": "John Doe"
+      },
+      "metadata": {
+        "your_custom_key": "your_custom_value"
+      },
+      "paid_at": null,
+      "created_at": "2026-08-16T10:12:00.000000Z",
+      "timestamp": "2026-08-16T10:15:24.000000Z"
+    }
+    ```
+  </Tab>
+</Tabs>
