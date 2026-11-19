@@ -8,14 +8,6 @@ api: "GET /api/v1/account/transactions"
 
 Retrieves all transactions for the authenticated user with support for pagination and filtering. Transactions are returned in reverse chronological order (newest first).
 
-## Request Headers
-
-| Header | Value |
-| --- | --- |
-| `Accept` | `application/json` |
-| `Content-Type` | `application/json` |
-| `Authorization` | `Bearer {api_key}` |
-
 ## Request Parameters
 
 <ParamField query="page" default="1" type="integer">
