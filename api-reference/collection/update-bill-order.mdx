@@ -6,6 +6,10 @@ api: "POST /v1/billpay/{transaction_id}/update"
 
 ## Request Headers
 
+<ParamField header="Idempotency-Key" type="string" required>
+  Unique identifier for each of your transaction
+</ParamField>
+
 <ParamField header="Accept" default="application/json" type="string">
   Expected response format. Use `application/json`.
 </ParamField>
